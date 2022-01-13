@@ -51,6 +51,7 @@ def get_green_color(text):
                 unsafe_allow_html=True)
 
 
+
 def get_red_color(url):
     st.markdown(f'<h1 style="color:#ff3333;font-size:20px;">{url}</h1>',
                 unsafe_allow_html=True)
@@ -108,9 +109,14 @@ st.subheader(f'Bank decision for customer with ID: {input_id}')
 # Décision de la banque et score:
 st.write(f'##### Probability of default: {round(probability[0] * 100, 1)} (%)')
 if bank_decision == 'Loan approved':
-    st.write(get_green_color(f'Bank decision: {bank_decision}'))
+    get_green_color(f'Bank decision: {bank_decision}')
 else:
-    st.write(get_red_color(f'Bank decision: {bank_decision}'))
+    get_red_color(f'Bank decision: {bank_decision}')
+
+# Affichage des graphes shap pour l'explicabilité du modèle:
+
+st.subheader("Features importance")
+st_shap(get_shap_fig(input_id), 600)
 
 # Comparaison du client avec la moyenne positif et négatif:
 st.subheader("More details for costumer:")
@@ -118,9 +124,6 @@ st.text('We will now compare the value of each feature with mean accepted and me
 features_options = st.selectbox('Choose the feature you want to compare:', features)
 get_mean(features_options, data, input_id)
 
-# Affichage des graphes shap pour l'explicabilité du modèle:
-st.subheader("Features importance")
 
-st_shap(shap.force_plot(shap_values), 600)
+#st_shap(shap.force_plot(shap_values), 600)
 # st_shap(shap.plots.beeswarm(shap_values))
-st_shap(get_shap_fig(input_id), 600)
